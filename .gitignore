@@ -1,0 +1,20 @@
+
+# Compiled binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+pet-gotchi
+pet-gotchi.exe
+
+# Go build cache
+/pkg/
+/bin/
+/dist/
+
+# WASM build
+/web/main.wasm
+
+# macOS
+.DS_Store

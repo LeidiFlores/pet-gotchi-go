@@ -1,0 +1,13 @@
+name: Feature request
+description: Propón una mejora o nueva idea
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Tu propuesta
+      description: ¿Qué te gustaría ver y por qué?
+      placeholder: Sé concreto y, si puedes, añade bocetos/capturas.
+    validations:
+      required: true

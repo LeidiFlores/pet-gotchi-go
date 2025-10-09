@@ -1,0 +1,13 @@
+name: Bug report
+description: Reporta un problema o comportamiento inesperado
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: ¿Qué pasó?
+      description: Describe el bug y cómo reproducirlo.
+      placeholder: Pasos, resultado esperado vs. actual...
+    validations:
+      required: true
