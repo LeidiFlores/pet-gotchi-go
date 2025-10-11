@@ -1,29 +1,29 @@
 # Contributing Guide
 
-¡Gracias por querer contribuir a **Pet-gotchi**! Buscamos PRs pequeñas y enfocadas.
+Thank you for your interest to contributing in **Pet-gotchi**! We looking for PRs little and focus.
 
-## Cómo empezar
-1. Forkea el repo y crea una rama desde `main`.
-2. Instala dependencias y corre el juego localmente:
+## How to start
+1. Fork the repo and made a branch from `main`.
+2. Install dependecies and run the game locally:
    ```bash
    go run ./cmd/game
    ```
-3. Elige un issue con `good first issue` o `help wanted`.
+3. Choose an issue with `good first issue` or `help wanted`.
 
-## Estilo
-- Go 1.22+, `go fmt ./...` antes de commitear.
-- Commits: tipo breve en imperativo (e.g., `feat: add wink animation`).
+## Style
+- Go 1.22+, `go fmt ./...` before commit.
+- Commits: imperative short type (e.g., `feat: add wink animation`).
 
 ## PRs
-- Enfoca tu PR en **una cosa**.
-- Incluye capturas/GIFs si cambias UI.
-- Describe el **por qué** y el **cómo**.
+- Focus your PR in **one thing**.
+- Add screens/GIFs if you changes UI.
+- Describe the **why** and the **how**.
 
-## Ideas para empezar
-- Nuevos emotes (😺💤🍖).
-- SFX al alimentar/cepillar.
-- Accesibilidad (lectura de teclas, tamaño de texto).
-- Traducciones (es/en) mediante archivos `.json`.
-- Balance de stats en `pet.go` (constantes).
+## Ideas to start
+- New emojis (😺💤🍖).
+- SFX when feeding/brushing.
+- Accessibility (keyboard reading, text size).
+- Translations (es/en) using `.json` files.
+- Stats balance in `pet.go` (constants).
 
-¡Gracias!
+Thanks! ✨
