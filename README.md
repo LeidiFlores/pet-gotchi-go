@@ -1,9 +1,9 @@
 # Pet-gotchi (Go + Ebiten + WASM)
 
-A **super cute** game like virtual pet build with **Go** using **Ebiten**. Thinking for Hacktoberfest and showed in your CV.
+A **super cute** virtual pet game built using **Go** and **Ebiten**. Great for Hacktoberfest and to show in your CV.
 
 ## Demo (WASM)
-> Next to active GitHub Pages, use `web/index.html` and the build `main.wasm` in the configurated branch. (Optional: automated with Github Actions).
+> Next to an active GitHub Pages, use `web/index.html` and the build `main.wasm` in the configured branch. (Optional: automated with GitHub Actions).
 
 ## Requirements
 - Go 1.22+
@@ -31,13 +31,13 @@ cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" web/
 ## Structure
 ```
 pet-gotchi-go/
-├─ cmd/game/main.go           # arranque
-├─ internal/game/game.go      # loop principal + gestor de escenas
-├─ internal/scene/menu.go     # escena del menú
-├─ internal/scene/pet.go      # escena principal "mascota"
-├─ internal/ui/button.go      # UI mínima
-├─ web/index.html             # host WASM
-├─ .github/workflows/build.yml# CI básico
+├ cmd/game/main.go # Start
+├ internal/game/game.go # Main loop + scene manager
+├ internal/scene/menu.go # Menu scene
+├ internal/scene/pet.go # Main "pet" scene
+├ internal/ui/button.go # Minimal UI
+├ web/index.html # WASM host
+├ .github/workflows/build.yml # Basic CI
 ├─ CONTRIBUTING.md
 ├─ ROADMAP.md
 └─ LICENSE
