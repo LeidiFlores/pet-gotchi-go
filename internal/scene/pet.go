@@ -7,15 +7,16 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type Pet struct {
 	switchTo func(Scene)
 	// stats
-	hunger  float64 // 0..100 (0 = lleno, 100 = hambriento)
-	sleep   float64 // 0..100 (0 = descansado, 100 = con sueño)
-	mood    float64 // 0..100 (0 = feliz, 100 = triste)
-	t       int
+	hunger float64 // 0..100 (0 = lleno, 100 = hambriento)
+	sleep  float64 // 0..100 (0 = descansado, 100 = con sueño)
+	mood   float64 // 0..100 (0 = feliz, 100 = triste)
+	t      int
 }
 
 func NewPet(switchTo func(Scene)) *Pet {
@@ -27,14 +28,14 @@ func (p *Pet) Update() error {
 	p.t++
 	if p.t%60 == 0 { // cada ~1s a 60fps
 		p.hunger = clamp01(p.hunger + 1)
-		p.sleep  = clamp01(p.sleep + 1)
-		p.mood   = clamp01(p.mood + 0.5)
+		p.sleep = clamp01(p.sleep + 1)
+		p.mood = clamp01(p.mood + 0.5)
 	}
 
 	// Controles: F alimenta, N siesta, B cepillar
 	if ebiten.IsKeyPressed(ebiten.KeyF) {
 		p.hunger = clamp01(p.hunger - 2)
-		p.mood   = clamp01(p.mood - 0.5)
+		p.mood = clamp01(p.mood - 0.5)
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyN) {
 		p.sleep = clamp01(p.sleep - 2)
@@ -50,7 +51,7 @@ func (p *Pet) Draw(screen *ebiten.Image) {
 
 	// Mascota placeholder: un círculo que late
 	r := 16.0 + 2.0*math.Sin(float64(p.t)/10.0)
-	ebitenutil.DrawCircle(screen, 160, 90, r, color.RGBA{255, 198, 216, 255})
+	vector.DrawFilledCircle(screen, 160, 90, float32(r), color.RGBA{255, 198, 216, 255}, true)
 	ebitenutil.DebugPrintAt(screen, "F: alimentar  B: cepillar  N: siesta", 10, 10)
 
 	// HUD simple
@@ -60,7 +61,11 @@ func (p *Pet) Draw(screen *ebiten.Image) {
 }
 
 func clamp01(v float64) float64 {
-	if v < 0 { return 0 }
-	if v > 100 { return 100 }
+	if v < 0 {
+		return 0
+	}
+	if v > 100 {
+		return 100
+	}
 	return v
 }
