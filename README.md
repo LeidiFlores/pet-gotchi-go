@@ -1,25 +1,25 @@
 # Pet-gotchi (Go + Ebiten + WASM)
 
-Un juego **super cute** tipo mascota virtual construido en **Go** usando **Ebiten**. Pensado para Hacktoberfest y para lucir en tu CV.
+A **super cute** game like virtual pet build with **Go** using **Ebiten**. Thinking for Hacktoberfest and showed in your CV.
 
 ## Demo (WASM)
-> Después de activar GitHub Pages, sube `web/index.html` y la build `main.wasm` al branch configurado. (Opcional: automatiza con GitHub Actions).
+> Next to active GitHub Pages, use `web/index.html` and the build `main.wasm` in the configurated branch. (Optional: automated with Github Actions).
 
-## Requisitos
+## Requirements
 - Go 1.22+
-- Módulo Ebiten v2
+- Module Ebiten v2
 
-## Ejecutar (Desktop)
+## Run (Desktop)
 ```bash
 go run ./cmd/game
 ```
 
-## Compilar (Desktop)
+## Build (Desktop)
 ```bash
 go build -o pet-gotchi ./cmd/game
 ```
 
-## Compilar a WASM
+## Compile to WASM
 ```bash
 GOOS=js GOARCH=wasm go build -o web/main.wasm ./cmd/game
 # Copiar wasm_exec.js de tu instalación de Go:
@@ -28,7 +28,7 @@ cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" web/
 # python3 -m http.server -d web 8080
 ```
 
-## Estructura
+## Structure
 ```
 pet-gotchi-go/
 ├─ cmd/game/main.go           # arranque
@@ -43,8 +43,8 @@ pet-gotchi-go/
 └─ LICENSE
 ```
 
-## Contribuir
-Lee `CONTRIBUTING.md` y mira los issues marcados como `good first issue` y `help wanted`.
+## Contribute
+Read `CONTRIBUTING.md` and show the issues marked as `good first issue` and `help wanted`.
 
 ---
 
