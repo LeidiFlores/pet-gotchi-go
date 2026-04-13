@@ -1,33 +1,18 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pet-gotchi ♥</title>
-    <style>
-      html, body { height: 100%; margin: 0; background: #fff7fb; }
-      canvas { image-rendering: pixelated; display:block; margin: 0 auto; }
-      .wrap { display:flex; align-items:center; justify-content:center; height:100%; flex-direction:column; gap:12px; }
-      .btn { padding:10px 16px; border-radius:14px; border:none; background:#ffd6e7; cursor:pointer; font-size:16px; }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <h1>Pet-gotchi ♥</h1>
-      <noscript>Este juego necesita JavaScript.</noscript>
-      <div id="status">Cargando...</div>
-      <canvas id="canvas"></canvas>
-      <button class="btn" onclick="location.reload()">Reiniciar</button>
-    </div>
-    <script src="wasm_exec.js"></script>
-    <script>
-      const go = new Go();
-      WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
-        document.getElementById('status').textContent = "¡Listo!";
-        go.run(result.instance);
-      }).catch(err => {
-        document.getElementById('status').textContent = "Error cargando WASM: " + err;
-      });
-    </script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/assets/styles/main.css">
+  <title>Pet Gotchi Go</title>
+</head>
+<body>
+  <script src="wasm_exec.js"></script>
+  <script>
+    const go = new Go();
+    WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
+      .then(result => go.run(result.instance))
+      .catch(err => console.error("Failed to load WASM:", err));
+  </script>
+</body>
 </html>
