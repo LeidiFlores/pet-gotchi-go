@@ -1,14 +1,13 @@
+![Go version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go&logoColor=white)
+![Ebiten](https://img.shields.io/badge/Ebiten-v2-blueviolet?style=flat)
+![WASM](https://img.shields.io/badge/WASM-ready-informational?style=flat)
+![License](https://img.shields.io/badge/license-MIT-success?style=flat)
+
 # Pet Gotchi Go 🐾
 
 > A virtual pet game built with Go + Ebiten, playable in the browser via WebAssembly.
 
 Raise, feed, and interact with your pixel companion — all in real time. This project was built to explore 2D game development in Go and WebAssembly compilation for browser delivery.
-
----
-
-## Demo
-
-> **Try it live:** [GitHub Pages link](#) _(deploy via the WASM build — see below)_
 
 ---
 
@@ -36,20 +35,24 @@ Raise, feed, and interact with your pixel companion — all in real time. This p
 ## Getting started
 
 ### Prerequisites
+
 - Go 1.22+
 - Ebiten v2 (`go get github.com/hajimehoshi/ebiten/v2`)
 
 ### Run on desktop
+
 ```bash
 go run ./cmd/game
 ```
 
 ### Build for desktop
+
 ```bash
 go build -o pet-gotchi ./cmd/game
 ```
 
 ### Build for browser (WASM)
+
 ```bash
 GOOS=js GOARCH=wasm go build -o web/main.wasm ./cmd/game
 cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" web/
