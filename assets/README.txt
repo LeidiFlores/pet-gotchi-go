@@ -1,1 +1,0 @@
-Coloca aquí sprites y sonidos (CC0).
