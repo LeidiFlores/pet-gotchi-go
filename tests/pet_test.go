@@ -57,14 +57,20 @@ func TestPetUpdate(t *testing.T) {
 
 	// Update less than 60 times, stats should not change
 	for i := 0; i < 59; i++ {
-		pet.Update()
+		_, err := pet.Update()
+		if err != nil {
+			t.Fatalf("Update returned error on tick %d: %v", i, err)
+		}
 	}
 	if pet.Hunger != initialHunger || pet.Sleep != initialSleep || pet.Mood != initialMood {
 		t.Error("Stats changed before 60 ticks")
 	}
 
 	// Update to 60th tick
-	pet.Update()
+	_, err := pet.Update()
+	if err != nil {
+		t.Fatalf("Update returned error on 60th tick: %v", err)
+	}
 	if pet.Hunger != scene.Clamp01(initialHunger+1) {
 		t.Errorf("Expected hunger %f, got %f", scene.Clamp01(initialHunger+1), pet.Hunger)
 	}
@@ -73,5 +79,28 @@ func TestPetUpdate(t *testing.T) {
 	}
 	if pet.Mood != scene.Clamp01(initialMood+0.5) {
 		t.Errorf("Expected mood %f, got %f", scene.Clamp01(initialMood+0.5), pet.Mood)
+	}
+}
+
+func TestPetInputActions(t *testing.T) {
+	switchTo := func(scene.Scene) {}
+	pet := scene.NewPet(switchTo)
+
+	pet.UpdateInputs(true, false, false)
+	if pet.Hunger != 48 {
+		t.Errorf("Expected hunger 48 after feed, got %f", pet.Hunger)
+	}
+	if pet.Mood != 19.5 {
+		t.Errorf("Expected mood 19.5 after feed, got %f", pet.Mood)
+	}
+
+	pet.UpdateInputs(false, true, false)
+	if pet.Sleep != 48 {
+		t.Errorf("Expected sleep 48 after sleep action, got %f", pet.Sleep)
+	}
+
+	pet.UpdateInputs(false, false, true)
+	if pet.Mood != 17.5 {
+		t.Errorf("Expected mood 17.5 after brush action, got %f", pet.Mood)
 	}
 }

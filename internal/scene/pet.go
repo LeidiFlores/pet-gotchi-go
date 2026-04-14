@@ -24,7 +24,7 @@ func NewPet(switchTo func(Scene)) *Pet {
 	return &Pet{SwitchTo: switchTo, Hunger: 50, Sleep: 50, Mood: 20}
 }
 
-func (p *Pet) Update() error {
+func (p *Pet) Update() (Scene, error) {
 
 	p.T++
 	if p.T%60 == 0 {
@@ -33,17 +33,25 @@ func (p *Pet) Update() error {
 		p.Mood = Clamp01(p.Mood + 0.5)
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyF) {
+	p.UpdateInputs(
+		inpututil.IsKeyJustPressed(ebiten.KeyF),
+		inpututil.IsKeyJustPressed(ebiten.KeyN),
+		inpututil.IsKeyJustPressed(ebiten.KeyB),
+	)
+	return p, nil
+}
+
+func (p *Pet) UpdateInputs(feed, sleep, brush bool) {
+	if feed {
 		p.Hunger = Clamp01(p.Hunger - 2)
 		p.Mood = Clamp01(p.Mood - 0.5)
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyN) {
+	if sleep {
 		p.Sleep = Clamp01(p.Sleep - 2)
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyB) {
+	if brush {
 		p.Mood = Clamp01(p.Mood - 2)
 	}
-	return nil
 }
 
 func (p *Pet) Draw(screen *ebiten.Image) {
