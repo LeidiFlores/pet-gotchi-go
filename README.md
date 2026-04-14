@@ -24,7 +24,7 @@ Raise, feed, and interact with your pixel companion — all in real time. This p
 ## Tech stack
 
 | Layer | Technology |
-|---|---|
+| --- | --- |
 | Language | Go 1.22+ |
 | Game engine | Ebiten v2 |
 | Rendering target | Desktop + WebAssembly |
@@ -56,6 +56,8 @@ go build -o pet-gotchi ./cmd/game
 ```bash
 GOOS=js GOARCH=wasm go build -o web/main.wasm ./cmd/game
 cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" web/
+mkdir -p web/assets/styles
+cp assets/styles/main.css web/assets/styles/main.css
 python3 -m http.server -d web 8080
 # then open http://localhost:8080
 ```

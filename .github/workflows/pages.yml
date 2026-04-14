@@ -27,6 +27,8 @@ jobs:
           mkdir -p web
           GOOS=js GOARCH=wasm go build -o web/main.wasm ./cmd/game
           cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" web/
+          mkdir -p web/assets/styles
+          cp assets/styles/main.css web/assets/styles/main.css
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

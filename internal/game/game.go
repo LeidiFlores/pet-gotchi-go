@@ -1,8 +1,9 @@
 package game
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
 	"petgotchi/internal/scene"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
@@ -16,7 +17,7 @@ type Game struct {
 
 func New() *Game {
 	g := &Game{}
-	g.current = scene.NewMenu(func(next scene.Scene){ gSwitch(g, next) })
+	g.current = scene.NewMenu(func(next scene.Scene) { gSwitch(g, next) })
 	return g
 }
 
@@ -25,7 +26,14 @@ func gSwitch(g *Game, s scene.Scene) {
 }
 
 func (g *Game) Update() error {
-	return g.current.Update()
+	nextScene, err := g.current.Update()
+
+	if err != nil {
+		return err
+	}
+
+	g.current = nextScene
+	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
