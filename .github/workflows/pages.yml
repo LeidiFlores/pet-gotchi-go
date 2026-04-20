@@ -26,7 +26,7 @@ jobs:
         run: |
           mkdir -p web
           GOOS=js GOARCH=wasm go build -o web/main.wasm ./cmd/game
-          cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" web/
+          cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" web/ 2>/dev/null || cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" web/
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
