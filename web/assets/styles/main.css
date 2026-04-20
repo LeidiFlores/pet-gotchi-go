@@ -1,12 +1,195 @@
+:root {
+    /* Shared pastel shell palette: cream, blush, mint, baby blue, peach. */
+    --cream: #fff8ed;
+    --blush: #ffdfe9;
+    --mint: #d2f2e3;
+    --baby-blue: #cde4ff;
+    --peach: #ffdfc6;
+    --ink-soft: #755f6f;
+    --shadow-pink: rgba(234, 181, 202, 0.35);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
 body {
     margin: 0;
-    background: #1c1c1c;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+    color: var(--ink-soft);
+    background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.75), transparent 36%),
+        linear-gradient(180deg, #fffdf7 0%, var(--cream) 36%, #ffeef4 100%);
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    inset: auto;
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::before {
+    width: 18rem;
+    height: 18rem;
+    top: 8%;
+    left: -4rem;
+    background: rgba(210, 242, 227, 0.7);
+    filter: blur(10px);
+}
+
+body::after {
+    width: 22rem;
+    height: 22rem;
+    right: -6rem;
+    bottom: -4rem;
+    background: rgba(205, 228, 255, 0.75);
+    filter: blur(14px);
+}
+
+.page-shell {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1rem;
+}
+
+.toy {
+    width: min(100%, 31rem);
+    padding: 1.4rem 1.4rem 1.75rem;
+    border: 6px solid rgba(255, 255, 255, 0.9);
+    border-radius: 2.2rem;
+    background:
+        linear-gradient(180deg, #fff9fb 0%, var(--blush) 50%, #ffd7cf 100%);
+    box-shadow:
+        0 26px 50px var(--shadow-pink),
+        inset 0 2px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -8px 16px rgba(233, 170, 188, 0.18);
+}
+
+.toy__header {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.toy__header h1 {
+    margin: 0;
+    font-size: clamp(1.9rem, 5vw, 2.5rem);
+    letter-spacing: 0.04em;
+}
+
+.toy__eyebrow {
+    margin: 0 0 0.35rem;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(117, 95, 111, 0.8);
+}
+
+.toy__screen {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 15rem;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    background: linear-gradient(180deg, var(--mint) 0%, #f7fff9 100%);
+    border: 5px solid rgba(255, 255, 255, 0.75);
+    box-shadow:
+        inset 0 0 0 4px rgba(176, 221, 201, 0.45),
+        inset 0 -10px 18px rgba(170, 212, 194, 0.26);
+    overflow: hidden;
+}
+
+.toy__screen-glow {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent 40%),
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.4), transparent 32%);
+    pointer-events: none;
+}
+
+.toy__screen canvas {
+    position: relative;
+    z-index: 1;
 }
 
 canvas {
     display: block;
+    width: min(100%, 320px);
+    height: auto;
+    border-radius: 1rem;
+    border: 4px solid rgba(255, 255, 255, 0.85);
+    background: var(--cream);
+    box-shadow: 0 12px 24px rgba(117, 95, 111, 0.12);
+    image-rendering: pixelated;
+}
+
+.toy__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-top: 1.2rem;
+}
+
+.toy__speaker {
+    width: 4.8rem;
+    height: 0.65rem;
+    border-radius: 999px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(117, 95, 111, 0.32) 0,
+            rgba(117, 95, 111, 0.32) 6px,
+            rgba(255, 255, 255, 0.3) 6px,
+            rgba(255, 255, 255, 0.3) 12px
+        );
+}
+
+.toy__button {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.7);
+    box-shadow: inset 0 -3px 6px rgba(117, 95, 111, 0.16);
+}
+
+.toy__button--mint {
+    background: var(--mint);
+}
+
+.toy__button--peach {
+    background: var(--peach);
+}
+
+.toy__button--blue {
+    background: var(--baby-blue);
+}
+
+@media (max-width: 540px) {
+    .page-shell {
+        padding: 1rem 0.75rem;
+    }
+
+    .toy {
+        padding: 1rem 1rem 1.3rem;
+        border-radius: 1.8rem;
+    }
+
+    .toy__screen {
+        min-height: 13rem;
+        padding: 0.75rem;
+    }
 }

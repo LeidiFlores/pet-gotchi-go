@@ -7,11 +7,41 @@
   <title>Pet Gotchi Go ♥︎</title>
 </head>
 <body>
+  <main class="page-shell">
+    <section class="toy" aria-label="Pet Gotchi Go game shell">
+      <div class="toy__header">
+        <p class="toy__eyebrow">Welcome to </p>
+        <h1>Pet Gotchi Go</h1>
+      </div>
+      <div class="toy__screen" data-game-screen>
+        <div class="toy__screen-glow"></div>
+      </div>
+      <div class="toy__controls" aria-hidden="true">
+        <span class="toy__speaker"></span>
+        <span class="toy__button toy__button--mint"></span>
+        <span class="toy__button toy__button--peach"></span>
+        <span class="toy__button toy__button--blue"></span>
+      </div>
+    </section>
+  </main>
   <script src="wasm_exec.js"></script>
   <script>
+    const shellScreen = document.querySelector("[data-game-screen]");
+    const mountCanvas = () => {
+      const canvas = document.querySelector("body > canvas");
+      if (canvas && shellScreen && canvas.parentElement !== shellScreen) {
+        shellScreen.appendChild(canvas);
+      }
+    };
+
+    new MutationObserver(mountCanvas).observe(document.body, { childList: true });
+
     const go = new Go();
     WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
-      .then(result => go.run(result.instance))
+      .then(result => {
+        mountCanvas();
+        return go.run(result.instance);
+      })
       .catch(err => console.error("Failed to load WASM:", err));
   </script>
 </body>
