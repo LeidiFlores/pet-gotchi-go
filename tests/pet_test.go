@@ -104,3 +104,24 @@ func TestPetInputActions(t *testing.T) {
 		t.Errorf("Expected mood 17.5 after brush action, got %f", pet.Mood)
 	}
 }
+
+func TestPetActionsStartFeedback(t *testing.T) {
+	switchTo := func(scene.Scene) {}
+	pet := scene.NewPet(switchTo)
+
+	pet.UpdateInputs(true, false, false)
+	if pet.T != 0 {
+		t.Errorf("Expected no tick change from input action, got %d", pet.T)
+	}
+
+	for i := 0; i < 28; i++ {
+		_, err := pet.Update()
+		if err != nil {
+			t.Fatalf("Update returned error while feedback was active: %v", err)
+		}
+	}
+
+	if pet.Hunger >= 50 {
+		t.Errorf("Expected hunger to improve after feed feedback flow, got %f", pet.Hunger)
+	}
+}
