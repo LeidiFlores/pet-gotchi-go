@@ -34,9 +34,9 @@ func NewPet(switchTo func(Scene)) *Pet {
 	p := &Pet{SwitchTo: switchTo, Hunger: 50, Sleep: 50, Mood: 20}
 	p.btnFeed = &ui.Button{
 		X:            26,
-		Y:            132,
+		Y:            178,
 		W:            82,
-		H:            24,
+		H:            28,
 		Label:        "Feed [F]",
 		BaseColor:    ui.Peach,
 		HoverColor:   ui.Blush,
@@ -45,9 +45,9 @@ func NewPet(switchTo func(Scene)) *Pet {
 	}
 	p.btnBrush = &ui.Button{
 		X:            119,
-		Y:            132,
+		Y:            178,
 		W:            82,
-		H:            24,
+		H:            28,
 		Label:        "Brush [B]",
 		BaseColor:    ui.Blush,
 		HoverColor:   ui.Peach,
@@ -56,9 +56,9 @@ func NewPet(switchTo func(Scene)) *Pet {
 	}
 	p.btnSleep = &ui.Button{
 		X:            212,
-		Y:            132,
+		Y:            178,
 		W:            82,
-		H:            24,
+		H:            28,
 		Label:        "Nap [N]",
 		BaseColor:    ui.BabyBlue,
 		HoverColor:   ui.Mint,
@@ -106,18 +106,18 @@ func (p *Pet) UpdateInputs(feed, sleep, brush bool) {
 
 func (p *Pet) Draw(screen *ebiten.Image) {
 	screen.Fill(ui.Cream)
-	ebitenutil.DrawRect(screen, 10, 10, 300, 160, ui.BabyBlue)
-	ebitenutil.DrawRect(screen, 18, 18, 284, 144, ui.Mint)
-	ebitenutil.DrawRect(screen, 26, 26, 268, 128, ui.Cream)
-	ebitenutil.DrawRect(screen, 34, 34, 74, 34, ui.Peach)
-	ebitenutil.DrawRect(screen, 123, 34, 74, 34, ui.Blush)
-	ebitenutil.DrawRect(screen, 212, 34, 74, 34, ui.BabyBlue)
-	ebitenutil.DrawRect(screen, 26, 122, 268, 38, ui.Blush)
-	drawFrame(screen, 10, 10, 300, 160)
-	drawFrame(screen, 26, 122, 268, 38)
-	drawFrame(screen, 34, 34, 74, 34)
-	drawFrame(screen, 123, 34, 74, 34)
-	drawFrame(screen, 212, 34, 74, 34)
+	ebitenutil.DrawRect(screen, 10, 10, 300, 220, ui.BabyBlue)
+	ebitenutil.DrawRect(screen, 18, 18, 284, 204, ui.Mint)
+	ebitenutil.DrawRect(screen, 26, 26, 268, 188, ui.Cream)
+	ebitenutil.DrawRect(screen, 34, 34, 74, 38, ui.Peach)
+	ebitenutil.DrawRect(screen, 123, 34, 74, 38, ui.Blush)
+	ebitenutil.DrawRect(screen, 212, 34, 74, 38, ui.BabyBlue)
+	ebitenutil.DrawRect(screen, 26, 170, 268, 44, ui.Blush)
+	drawFrame(screen, 10, 10, 300, 220)
+	drawFrame(screen, 26, 170, 268, 44)
+	drawFrame(screen, 34, 34, 74, 38)
+	drawFrame(screen, 123, 34, 74, 38)
+	drawFrame(screen, 212, 34, 74, 38)
 
 	drawPetBuddy(screen, p)
 	ui.DrawText(screen, "Care for your pocket pal", 160, 18, ui.TextStyle{
@@ -130,18 +130,17 @@ func (p *Pet) Draw(screen *ebiten.Image) {
 		PrimaryAlign:   etext.AlignCenter,
 		SecondaryAlign: etext.AlignStart,
 	})
-	ui.DrawText(screen, "Choose a care action below.\nTap a button or press its key.", 160, 110, ui.TextStyle{
+	ui.DrawText(screen, "Tap a button or press its key.", 160, 159, ui.TextStyle{
 		Size:           7.5,
 		Weight:         ui.FontRegular,
 		Color:          ui.InkDark,
 		PrimaryAlign:   etext.AlignCenter,
 		SecondaryAlign: etext.AlignStart,
-		LineSpacing:    10,
 	})
 
-	drawStatMeter(screen, 34, 34, 74, 34, "Hunger", p.Hunger, ui.Peach, "drumstick")
-	drawStatMeter(screen, 123, 34, 74, 34, "Mood", p.Mood, ui.Blush, "heart")
-	drawStatMeter(screen, 212, 34, 74, 34, "Sleep", p.Sleep, ui.BabyBlue, "moon")
+	drawStatMeter(screen, 34, 34, 74, 38, "Hunger", p.Hunger, ui.Peach, "drumstick")
+	drawStatMeter(screen, 123, 34, 74, 38, "Mood", p.Mood, ui.Blush, "heart")
+	drawStatMeter(screen, 212, 34, 74, 38, "Sleep", p.Sleep, ui.BabyBlue, "moon")
 
 	p.btnFeed.Draw(screen)
 	p.btnBrush.Draw(screen)
@@ -276,7 +275,7 @@ func drawPetBuddy(screen *ebiten.Image, p *Pet) {
 		progress := float64(p.feedbackTicks) / 28.0
 		bounce -= math.Sin(progress*math.Pi) * 5
 	}
-	y := float32(88 + bounce)
+	y := float32(121 + bounce)
 	face := petFaceState(p.Hunger, p.Sleep, p.Mood)
 
 	drawPetShadow(screen, x, y+29)
