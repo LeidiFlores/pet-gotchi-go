@@ -19,7 +19,7 @@ type Menu struct {
 
 func NewMenu(switchTo func(Scene)) *Menu {
 	m := &Menu{switchTo: switchTo}
-	m.btnStart = &ui.Button{X: 80, Y: 124, W: 160, H: 34, Label: "Start Caring", OnClick: func() {
+	m.btnStart = &ui.Button{X: 80, Y: 174, W: 160, H: 34, Label: "Start Caring", OnClick: func() {
 		m.next = NewPet(m.switchTo)
 	}}
 	return m
@@ -38,22 +38,22 @@ func (m *Menu) Update() (Scene, error) {
 
 func (m *Menu) Draw(screen *ebiten.Image) {
 	screen.Fill(ui.Cream)
-	ebitenutil.DrawRect(screen, 12, 12, 296, 156, ui.Blush)
-	ebitenutil.DrawRect(screen, 18, 18, 284, 144, ui.Mint)
-	ebitenutil.DrawRect(screen, 24, 24, 272, 132, ui.Cream)
-	ebitenutil.DrawRect(screen, 42, 28, 236, 20, ui.BabyBlue)
-	ebitenutil.DrawRect(screen, 50, 40, 220, 78, ui.Blush)
-	ebitenutil.DrawRect(screen, 58, 48, 204, 62, ui.Cream)
-	drawFrame(screen, 12, 12, 296, 156)
-	drawFrame(screen, 58, 48, 204, 62)
+	ebitenutil.DrawRect(screen, 12, 12, 296, 216, ui.Blush)
+	ebitenutil.DrawRect(screen, 18, 18, 284, 204, ui.Mint)
+	ebitenutil.DrawRect(screen, 24, 24, 272, 192, ui.Cream)
+	ebitenutil.DrawRect(screen, 42, 28, 236, 24, ui.BabyBlue)
+	ebitenutil.DrawRect(screen, 50, 52, 220, 110, ui.Blush)
+	ebitenutil.DrawRect(screen, 58, 60, 204, 96, ui.Cream)
+	drawFrame(screen, 12, 12, 296, 216)
+	drawFrame(screen, 58, 60, 204, 96)
 
-	drawCloud(screen, 52, 38, 18)
-	drawCloud(screen, 252, 46, 14)
-	drawHeart(screen, 72, 44, 6, ui.Peach)
-	drawHeart(screen, 248, 34, 5, ui.BabyBlue)
-	drawMascotPreview(screen, 160, 81)
+	drawCloud(screen, 52, 50, 18)
+	drawCloud(screen, 252, 58, 14)
+	drawHeart(screen, 72, 54, 6, ui.Peach)
+	drawHeart(screen, 248, 42, 5, ui.BabyBlue)
+	drawMascotPreview(screen, 160, 108)
 
-	ui.DrawText(screen, "PET GOTCHI GO", 160, 39, ui.TextStyle{
+	ui.DrawText(screen, "PET GOTCHI GO", 160, 40, ui.TextStyle{
 		Size:           18,
 		Weight:         ui.FontBold,
 		Color:          ui.InkDark,
@@ -63,7 +63,7 @@ func (m *Menu) Draw(screen *ebiten.Image) {
 		PrimaryAlign:   etext.AlignCenter,
 		SecondaryAlign: etext.AlignCenter,
 	})
-	ui.DrawText(screen, "Adopt a pocket pal,\nthen keep it fed, rested, and happy.", 160, 110, ui.TextStyle{
+	ui.DrawText(screen, "Adopt a pocket pal,\nthen keep it fed, rested, and happy.", 160, 147, ui.TextStyle{
 		Size:           10.5,
 		Weight:         ui.FontRegular,
 		Color:          ui.InkDark,
@@ -71,7 +71,7 @@ func (m *Menu) Draw(screen *ebiten.Image) {
 		SecondaryAlign: etext.AlignCenter,
 		LineSpacing:    14,
 	})
-	ui.DrawText(screen, "Tap or click to begin", 160, 112+38, ui.TextStyle{
+	ui.DrawText(screen, "Tap or click to begin", 160, 164, ui.TextStyle{
 		Size:           8.5,
 		Weight:         ui.FontBold,
 		Color:          ui.InkDark,

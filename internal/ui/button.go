@@ -21,7 +21,7 @@ type Button struct {
 }
 
 func (b *Button) Update(mx, my int, pointerDown, justPressed, justReleased bool) {
-	b.Hover = mx >= b.X && mx <= b.X+b.W && my >= b.Y && my <= b.Y+b.H
+	b.Hover = mx >= b.X && mx < b.X+b.W && my >= b.Y && my < b.Y+b.H
 	if (pointerDown || justPressed) && b.Hover {
 		b.Pressed = true
 	}

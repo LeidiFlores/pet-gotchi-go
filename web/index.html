@@ -26,11 +26,92 @@
   </main>
   <script src="wasm_exec.js"></script>
   <script>
+    // Ebiten reads document.body.clientWidth/Height as "outside" dimensions and
+    // uses event.clientX/Y (viewport-absolute) to compute logical cursor positions.
+    // When the canvas lives inside .toy__screen (offset from the viewport origin),
+    // those absolute coordinates are completely wrong.
+    //
+    // This translator intercepts every pointer event before Ebiten's own listeners
+    // (capture phase runs first) and replaces clientX/Y with the value Ebiten would
+    // need if the user had clicked the equivalent point on a full-body canvas.
+    const GAME_W = 320;
+    const GAME_H = 240;
+
+    function toEbitenClient(canvas, clientX, clientY) {
+      const rect  = canvas.getBoundingClientRect();
+      const bodyW = document.body.clientWidth;
+      const bodyH = document.body.clientHeight;
+      const dpr   = window.devicePixelRatio || 1;
+      // mirror Ebiten's screenScaleAndOffsets()
+      const scale = Math.min((bodyW * dpr) / GAME_W, (bodyH * dpr) / GAME_H);
+      const offX  = (bodyW * dpr - GAME_W * scale) / 2;
+      const offY  = (bodyH * dpr - GAME_H * scale) / 2;
+      // canvas-relative CSS px → logical game coords
+      const lx = (clientX - rect.left) * (GAME_W / rect.width);
+      const ly = (clientY - rect.top)  * (GAME_H / rect.height);
+      // logical → the clientX/Y Ebiten's clientPositionToLogicalPosition() expects
+      return {
+        clientX: (lx * scale + offX) / dpr,
+        clientY: (ly * scale + offY) / dpr,
+      };
+    }
+
+    function fixCanvasInput(canvas) {
+      let busy = false;
+
+      function interceptMouse(type) {
+        canvas.addEventListener(type, (e) => {
+          if (busy) return;
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          const c = toEbitenClient(canvas, e.clientX, e.clientY);
+          busy = true;
+          canvas.dispatchEvent(new MouseEvent(type, {
+            bubbles: true, cancelable: true,
+            clientX: c.clientX, clientY: c.clientY,
+            button: e.button, buttons: e.buttons,
+            movementX: e.movementX, movementY: e.movementY,
+          }));
+          busy = false;
+        }, { capture: true });
+      }
+
+      // Convert touch to mouse so the same fix applies and readPointerState()
+      // in Go picks up correct coordinates via the mouse path.
+      function interceptTouch(touchType, mouseType) {
+        canvas.addEventListener(touchType, (e) => {
+          if (busy) return;
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          const src = touchType === 'touchend' ? e.changedTouches : e.touches;
+          if (!src.length) return;
+          const t = src[0];
+          const c = toEbitenClient(canvas, t.clientX, t.clientY);
+          busy = true;
+          canvas.dispatchEvent(new MouseEvent(mouseType, {
+            bubbles: true, cancelable: true,
+            clientX: c.clientX, clientY: c.clientY,
+            button: 0, buttons: touchType === 'touchend' ? 0 : 1,
+          }));
+          busy = false;
+        }, { capture: true });
+      }
+
+      interceptMouse('mousedown');
+      interceptMouse('mouseup');
+      interceptMouse('mousemove');
+      interceptTouch('touchstart', 'mousedown');
+      interceptTouch('touchend',   'mouseup');
+      interceptTouch('touchmove',  'mousemove');
+    }
+
     const shellScreen = document.querySelector("[data-game-screen]");
+
     const mountCanvas = () => {
       const canvas = document.querySelector("body > canvas");
       if (canvas && shellScreen && canvas.parentElement !== shellScreen) {
         shellScreen.appendChild(canvas);
+        fixCanvasInput(canvas);
       }
     };
 

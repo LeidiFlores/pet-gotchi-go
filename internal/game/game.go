@@ -8,7 +8,7 @@ import (
 
 const (
 	ScreenW = 320
-	ScreenH = 180
+	ScreenH = 240
 )
 
 type Game struct {
@@ -41,5 +41,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(w, h int) (int, int) {
+	return ScreenW, ScreenH
+}
+
+func (g *Game) LayoutF(outsideW, outsideH float64) (float64, float64) {
 	return ScreenW, ScreenH
 }
