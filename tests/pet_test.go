@@ -86,7 +86,7 @@ func TestPetInputActions(t *testing.T) {
 	switchTo := func(scene.Scene) {}
 	pet := scene.NewPet(switchTo)
 
-	pet.UpdateInputs(true, false, false)
+	pet.UpdateInputs(true, false, false, false)
 	if pet.Hunger != 48 {
 		t.Errorf("Expected hunger 48 after feed, got %f", pet.Hunger)
 	}
@@ -94,12 +94,12 @@ func TestPetInputActions(t *testing.T) {
 		t.Errorf("Expected mood 19.5 after feed, got %f", pet.Mood)
 	}
 
-	pet.UpdateInputs(false, true, false)
+	pet.UpdateInputs(false, true, false, false)
 	if pet.Sleep != 48 {
 		t.Errorf("Expected sleep 48 after sleep action, got %f", pet.Sleep)
 	}
 
-	pet.UpdateInputs(false, false, true)
+	pet.UpdateInputs(false, false, true, false)
 	if pet.Mood != 17.5 {
 		t.Errorf("Expected mood 17.5 after brush action, got %f", pet.Mood)
 	}
@@ -109,7 +109,7 @@ func TestPetActionsStartFeedback(t *testing.T) {
 	switchTo := func(scene.Scene) {}
 	pet := scene.NewPet(switchTo)
 
-	pet.UpdateInputs(true, false, false)
+	pet.UpdateInputs(true, false, false, false)
 	if pet.T != 0 {
 		t.Errorf("Expected no tick change from input action, got %d", pet.T)
 	}
@@ -123,5 +123,47 @@ func TestPetActionsStartFeedback(t *testing.T) {
 
 	if pet.Hunger >= 50 {
 		t.Errorf("Expected hunger to improve after feed feedback flow, got %f", pet.Hunger)
+	}
+}
+
+func TestPetMenuInputReturnsToMenu(t *testing.T) {
+	switchTo := func(scene.Scene) {}
+	pet := scene.NewPet(switchTo)
+
+	pet.UpdateInputs(false, false, false, true)
+	next, err := pet.Update()
+	if err != nil {
+		t.Fatalf("Update returned error after menu input: %v", err)
+	}
+	if _, ok := next.(*scene.Menu); !ok {
+		t.Fatalf("Expected menu scene after menu input, got %T", next)
+	}
+}
+
+func TestPetMenuReturnAllowsFreshPetState(t *testing.T) {
+	switchTo := func(scene.Scene) {}
+	pet := scene.NewPet(switchTo)
+
+	pet.UpdateInputs(true, true, true, true)
+	next, err := pet.Update()
+	if err != nil {
+		t.Fatalf("Update returned error after menu input: %v", err)
+	}
+	if _, ok := next.(*scene.Menu); !ok {
+		t.Fatalf("Expected menu scene after menu input, got %T", next)
+	}
+
+	freshPet := scene.NewPet(switchTo)
+	if freshPet.Hunger != 50 {
+		t.Errorf("Expected fresh hunger 50, got %f", freshPet.Hunger)
+	}
+	if freshPet.Sleep != 50 {
+		t.Errorf("Expected fresh sleep 50, got %f", freshPet.Sleep)
+	}
+	if freshPet.Mood != 20 {
+		t.Errorf("Expected fresh mood 20, got %f", freshPet.Mood)
+	}
+	if freshPet.T != 0 {
+		t.Errorf("Expected fresh t 0, got %d", freshPet.T)
 	}
 }
