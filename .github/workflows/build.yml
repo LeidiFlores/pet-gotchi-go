@@ -35,6 +35,10 @@ jobs:
           mkdir -p web
           GOOS=js GOARCH=wasm go build -o web/main.wasm ./cmd/game
           cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" web/
+
+      - name: Run tests
+        run: go test ./...
+
       - name: Upload web artifact
         uses: actions/upload-artifact@v4
         with:
