@@ -17,9 +17,11 @@ import (
 
 type Pet struct {
 	SwitchTo func(Scene)
+	btnMenu  *ui.Button
 	btnFeed  *ui.Button
 	btnBrush *ui.Button
 	btnSleep *ui.Button
+	next     Scene
 	// stats
 	Hunger float64 // 0..100 (0 = full, 100 = hungry)
 	Sleep  float64 // 0..100 (0 = awake, 100 = sleepy)
@@ -32,6 +34,17 @@ type Pet struct {
 
 func NewPet(switchTo func(Scene)) *Pet {
 	p := &Pet{SwitchTo: switchTo, Hunger: 50, Sleep: 50, Mood: 20}
+	p.btnMenu = &ui.Button{
+		X:            26,
+		Y:            18,
+		W:            54,
+		H:            20,
+		Label:        "Menu",
+		BaseColor:    ui.Mint,
+		HoverColor:   ui.Peach,
+		PressedColor: ui.BlushStrong,
+		OnClick:      p.returnToMenu,
+	}
 	p.btnFeed = &ui.Button{
 		X:            26,
 		Y:            178,
@@ -80,6 +93,7 @@ func (p *Pet) Update() (Scene, error) {
 	}
 
 	pointer := readPointerState()
+	p.btnMenu.Update(pointer.x, pointer.y, pointer.down, pointer.justPressed, pointer.justReleased)
 	p.btnFeed.Update(pointer.x, pointer.y, pointer.down, pointer.justPressed, pointer.justReleased)
 	p.btnBrush.Update(pointer.x, pointer.y, pointer.down, pointer.justPressed, pointer.justReleased)
 	p.btnSleep.Update(pointer.x, pointer.y, pointer.down, pointer.justPressed, pointer.justReleased)
@@ -88,11 +102,15 @@ func (p *Pet) Update() (Scene, error) {
 		inpututil.IsKeyJustPressed(ebiten.KeyF),
 		inpututil.IsKeyJustPressed(ebiten.KeyN),
 		inpututil.IsKeyJustPressed(ebiten.KeyB),
+		inpututil.IsKeyJustPressed(ebiten.KeyEscape),
 	)
+	if p.next != nil {
+		return p.next, nil
+	}
 	return p, nil
 }
 
-func (p *Pet) UpdateInputs(feed, sleep, brush bool) {
+func (p *Pet) UpdateInputs(feed, sleep, brush, menu bool) {
 	if feed {
 		p.feed()
 	}
@@ -101,6 +119,9 @@ func (p *Pet) UpdateInputs(feed, sleep, brush bool) {
 	}
 	if brush {
 		p.brush()
+	}
+	if menu {
+		p.returnToMenu()
 	}
 }
 
@@ -142,6 +163,7 @@ func (p *Pet) Draw(screen *ebiten.Image) {
 	drawStatMeter(screen, 123, 34, 74, 38, "Mood", p.Mood, ui.Blush, "heart")
 	drawStatMeter(screen, 212, 34, 74, 38, "Sleep", p.Sleep, ui.BabyBlue, "moon")
 
+	p.btnMenu.Draw(screen)
 	p.btnFeed.Draw(screen)
 	p.btnBrush.Draw(screen)
 	p.btnSleep.Draw(screen)
@@ -166,6 +188,10 @@ func (p *Pet) brush() {
 func (p *Pet) startFeedback(kind string) {
 	p.feedbackKind = kind
 	p.feedbackTicks = 28
+}
+
+func (p *Pet) returnToMenu() {
+	p.next = NewMenu(p.SwitchTo)
 }
 
 func Clamp01(v float64) float64 {
